@@ -1,0 +1,92 @@
+<!doctype html>
+<html id="top">
+<head>
+<title>API Fun</title>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"> </script>
+<script type="JSON" src="SongList.json"></script>
+<style>
+	body {
+		background-image: url("stars.jpg");
+		background-size: 100%;
+		color: #ffff;
+		font-family: "Rockwell Extra Bold", "Rockwell Bold", monospace;
+	}
+	h1 {
+		padding: 2%;
+	}
+	#display {
+		background-image: url("moon.jpg");
+		background-size: 100%;
+		border-radius: 100%;
+		padding: 9%;
+		margin-left: 10%;
+		margin-right: 10%;
+		color: #000000;
+		text-align: center;
+	}
+	#latitude, #longitude {
+		font-size: 200%;
+		color: #a10a0c;
+	}
+	#description {
+		background-color: #c4bebf;
+		font-size: 150%;
+		margin: 5%;
+		padding: 2%;
+	}
+
+
+</style>
+
+<script language="javascript">
+    var strObj;
+    var parseObj;
+    var data;
+
+    document.addEventListener("DOMContentLoaded", onReady);
+    function onReady() {
+        var req = new XMLHttpRequest();
+        req.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                strObj = JSON.stringify(this.responseText);
+                parseObj = JSON.parse(this.responseText);
+                document.getElementById("latitude").innerHTML = "Latitude: " + parseObj.iss_position.latitude;
+                document.getElementById("longitude").innerHTML = "Longitude: " + parseObj.iss_position.longitude;
+                document.getElementById("message").innerHTML = "Message: " + parseObj.message;
+                document.getElementById("timestamp").innerHTML = "Timestamp: " + parseObj.timestamp;
+            }    
+        }
+        req.open("GET", "http://api.open-notify.org/iss-now.json", true);
+        req.send();
+    }
+</script>
+</head>
+
+<body>
+	<div class="content">
+    <h1>API Fun!</h1>
+    <div id="display">
+  		<h2>The current location of the international space station right now is: </h2>
+  		<p id="latitude"></p>
+  		<p id="longitude"></p>
+  		<p id="message"></p>
+  		<p id="timestamp"></p>
+  	</div><br>
+  	<div id="description">
+    	<h2>API Description</h2>
+	    <p>This API gets the current location of the international space station at any moment in time. The data sent back is an object that consists of the position: latitude, longitude; message: success or not; and timestamp of the request.</p>
+	    <p>The website I found it on is: <a href="http://open-notify.org/Open-Notify-API/ISS-Location-Now/">Open Notify</a></p>
+	    <p>The options I used for the API request: </p>
+	    <ul>
+	    	<li><strong>document.addEventListener("DOMContentLoaded", onReady):</strong> This is the event listener that calls the onReady() function once the page content has loaded.</li>
+	    	<li><strong>XMLHTTPRequest:</strong> I created a new XMLHTTP request in order to specify that I'm about to request information from an API.</li>
+	    	<li><strong>req.onreadystatechange:</strong> This line of code is saying to enter a function once the ready state of the request changes.</li>
+	    	<li><strong>this.readystate and this.status:</strong> These variables convey what the state of the request is and whether or not it is succesful.</li>
+	    	<li><strong>req.open("GET", "http://api.open-notify.org/iss-now.json", true):</strong> This is the get function that is actually opening the request to get the API data and specifying whether or not to get the API aysnchronously.</li>
+	    	<li><strong>Req.send():</strong> This is when we send the actual request to get the data. Now, the readystatechange should enter and the readyState and status will eventually change.</li>
+	    </ul>
+	    <p>One application of this API is for a space app that allows its users to see where the space station is located around the Earth at any time when they open the app.<br><br>
+	    Another application is if someone was building a model of the Earth and the space station around it, and they would program it to be at the correct point in space at every moment.</p>
+  	</div>
+</body>
+</html>
